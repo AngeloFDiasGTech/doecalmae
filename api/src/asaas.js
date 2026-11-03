@@ -19,6 +19,21 @@ export function createAsaasClient({ apiKey, baseUrl, fetchImpl = fetch }) {
   ) {
     throw new Error("ASAAS_BASE_URL must point to the official Asaas API over HTTPS.");
   }
+  const checkoutHostname = base.hostname === "api-sandbox.asaas.com"
+    ? "sandbox.asaas.com"
+    : "www.asaas.com";
+
+  function isValidCheckoutUrl(value) {
+    try {
+      const checkout = new URL(value);
+      return checkout.protocol === "https:"
+        && checkout.hostname === checkoutHostname
+        && !checkout.username
+        && !checkout.password;
+    } catch {
+      return false;
+    }
+  }
 
   async function request(path, { method = "GET", body } = {}) {
     let response;
@@ -51,6 +66,8 @@ export function createAsaasClient({ apiKey, baseUrl, fetchImpl = fetch }) {
   }
 
   return {
+    isValidCheckoutUrl,
+
     async createCustomer(donor) {
       return request("/customers", {
         method: "POST",

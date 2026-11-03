@@ -130,7 +130,7 @@ export function createApp({ pool, asaas, frontendOrigin, webhookToken }) {
 
       const checkoutUrl = payment?.invoiceUrl;
       const checkout = checkoutUrl ? new URL(checkoutUrl) : null;
-      if (!checkout || checkout.protocol !== "https:" || checkout.hostname !== "www.asaas.com" || !payment.id) {
+      if (!checkout || !asaas.isValidCheckoutUrl(checkoutUrl) || !payment.id) {
         if (subscriptionId) await asaas.deleteSubscription(subscriptionId);
         throw new Error("O Asaas não retornou uma fatura válida para pagamento.");
       }

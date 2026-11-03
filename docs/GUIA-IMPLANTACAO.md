@@ -11,7 +11,7 @@ Não reutilize banco, chave de API ou token de webhook entre HML e PRD. As URLs 
 
 Tenha acesso administrativo a:
 
-1. Repositório GitHub `angelofdiasg/doecalmae`.
+1. Repositório GitHub `doecalmaejovem/doecalmae`.
 2. Conta Vercel.
 3. Conta Railway.
 4. Conta Neon.
@@ -44,7 +44,7 @@ No GitHub, abra o repositório, selecione o branch `main` e crie o branch `homol
 Faça agora:
 
 1. No GitHub, abra `main` e crie o branch `homologacao` a partir dele, caso ainda não exista.
-2. Abra um Pull Request de `feat/guia-implantacao-hml-prd` para `homologacao` em <https://github.com/angelofdiasg/doecalmae/pull/new/feat/guia-implantacao-hml-prd>.
+2. Abra um Pull Request de `feat/guia-implantacao-hml-prd` para `homologacao` em <https://github.com/doecalmaejovem/doecalmae/pull/new/feat/guia-implantacao-hml-prd>.
 3. Revise e aprove o Pull Request. Após o merge, conecte os serviços HML a `homologacao` conforme este guia.
 4. Depois de aprovar HML, abra um Pull Request de `homologacao` para `main`.
 
@@ -80,7 +80,7 @@ Abra um Pull Request do novo branch para `homologacao`. Depois dos testes e apro
 ### 4.2 Railway — API de homologação
 
 1. Crie um projeto Railway, por exemplo `doecalmae`.
-2. Adicione um serviço a partir do repositório GitHub `angelofdiasg/doecalmae`.
+2. Adicione um serviço a partir do repositório GitHub `doecalmaejovem/doecalmae`.
 3. Configure:
    - **Service name:** `doecalmae-api-hml`
    - **Branch:** `homologacao`
