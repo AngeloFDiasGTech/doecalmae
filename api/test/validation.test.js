@@ -33,3 +33,9 @@ test("rejects invalid amounts and identifier lengths", () => {
   assert.equal(donationSchema.safeParse({ ...validDonation, amount: 0 }).success, false);
   assert.equal(donationSchema.safeParse({ ...validDonation, cpfCnpj: "1234" }).success, false);
 });
+
+test("returns a clear validation message when the phone includes a country code", () => {
+  const result = donationSchema.safeParse({ ...validDonation, phone: "5581991234567" });
+  assert.equal(result.success, false);
+  assert.match(result.error.issues[0].message, /sem o código do país \(\+55\)/);
+});
