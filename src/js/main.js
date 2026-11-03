@@ -221,6 +221,17 @@ donationForm.addEventListener("submit", async (event) => {
   }
 });
 
+window.addEventListener("pageshow", (event) => {
+  if (!event.persisted) return;
+
+  donationSubmit.disabled = false;
+  if (donationStatus.textContent === "Preparando o pagamento seguro...") {
+    donationStatus.textContent = "";
+  }
+  updatePaymentOptions();
+  updateDonationValidation();
+});
+
 updatePaymentOptions();
 updateDonationValidation();
 
