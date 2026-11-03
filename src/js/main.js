@@ -205,7 +205,10 @@ donationForm.addEventListener("submit", async (event) => {
     }
 
     const checkoutUrl = new URL(result.checkoutUrl);
-    if (checkoutUrl.protocol !== "https:" || !["asaas.com", "www.asaas.com"].includes(checkoutUrl.hostname)) {
+    if (checkoutUrl.protocol !== "https:"
+      || !["sandbox.asaas.com", "www.asaas.com"].includes(checkoutUrl.hostname)
+      || checkoutUrl.username
+      || checkoutUrl.password) {
       throw new Error("O Asaas retornou um endereço de pagamento inválido.");
     }
 

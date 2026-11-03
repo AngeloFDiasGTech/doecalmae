@@ -9,6 +9,24 @@ test("restricts the Asaas API to its official HTTPS hosts", () => {
   );
 });
 
+test("validates checkout URLs for the configured Asaas environment", () => {
+  const sandbox = createAsaasClient({
+    apiKey: "sandbox-key",
+    baseUrl: "https://api-sandbox.asaas.com",
+  });
+  const production = createAsaasClient({
+    apiKey: "live-key",
+    baseUrl: "https://api.asaas.com",
+  });
+
+  assert.equal(sandbox.isValidCheckoutUrl("https://sandbox.asaas.com/i/test"), true);
+  assert.equal(sandbox.isValidCheckoutUrl("https://www.asaas.com/i/test"), false);
+  assert.equal(production.isValidCheckoutUrl("https://www.asaas.com/i/test"), true);
+  assert.equal(production.isValidCheckoutUrl("https://sandbox.asaas.com/i/test"), false);
+  assert.equal(sandbox.isValidCheckoutUrl("https://sandbox.asaas.com.attacker.example/i/test"), false);
+  assert.equal(sandbox.isValidCheckoutUrl("http://sandbox.asaas.com/i/test"), false);
+});
+
 test("creates a customer and single charge using server-side credentials", async () => {
   const calls = [];
   const client = createAsaasClient({

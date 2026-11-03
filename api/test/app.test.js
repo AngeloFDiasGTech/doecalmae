@@ -28,12 +28,13 @@ test("creates a pending checkout without persisting donor personal data", async 
   };
   const asaas = {
     nextDueDate: () => "2026-10-22",
+    isValidCheckoutUrl: (url) => url === "https://sandbox.asaas.com/i/test",
     async createCustomer(donor) {
       assert.equal(donor.email, "doador@example.org");
       return { id: "customer-id" };
     },
     async createPayment() {
-      return { id: "payment-id", invoiceUrl: "https://www.asaas.com/i/test" };
+      return { id: "payment-id", invoiceUrl: "https://sandbox.asaas.com/i/test" };
     },
   };
   const app = createApp({
@@ -60,7 +61,7 @@ test("creates a pending checkout without persisting donor personal data", async 
     });
 
     assert.equal(response.status, 201);
-    assert.deepEqual(await response.json(), { checkoutUrl: "https://www.asaas.com/i/test" });
+    assert.deepEqual(await response.json(), { checkoutUrl: "https://sandbox.asaas.com/i/test" });
     assert.equal(databaseCalls.length, 2);
     assert.equal(databaseCalls[0].values.includes("doador@example.org"), false);
     assert.equal(databaseCalls[0].values.includes("Pessoa Doadora"), false);
@@ -100,6 +101,7 @@ test("creates a monthly subscription and returns its first hosted invoice", asyn
   };
   const asaas = {
     nextDueDate: () => "2026-10-22",
+    isValidCheckoutUrl: (url) => url === "https://sandbox.asaas.com/i/monthly",
     async createCustomer(donor) {
       assert.equal(donor.frequency, "monthly");
       return { id: "customer-id" };
@@ -110,7 +112,7 @@ test("creates a monthly subscription and returns its first hosted invoice", asyn
     },
     async getSubscriptionPayments(id) {
       calls.push({ paymentsFor: id });
-      return { data: [{ id: "first-payment", invoiceUrl: "https://www.asaas.com/i/monthly" }] };
+      return { data: [{ id: "first-payment", invoiceUrl: "https://sandbox.asaas.com/i/monthly" }] };
     },
     async deleteSubscription() {
       assert.fail("A valid monthly invoice should not be cancelled");
@@ -140,7 +142,7 @@ test("creates a monthly subscription and returns its first hosted invoice", asyn
     });
 
     assert.equal(response.status, 201);
-    assert.deepEqual(await response.json(), { checkoutUrl: "https://www.asaas.com/i/monthly" });
+    assert.deepEqual(await response.json(), { checkoutUrl: "https://sandbox.asaas.com/i/monthly" });
     assert.equal(calls.find((call) => call.subscription)?.subscription.billingType, "PIX");
     assert.equal(calls.find((call) => call.paymentsFor)?.paymentsFor, "subscription-id");
   });
